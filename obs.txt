@@ -1,7 +1,0 @@
-este arquivo contém apenas os tópicos que conterá o sistema:
-
-.o sistema deve enviar mensagens para todos os usuários;
-.o sistema deve enviar mensagens para um usuário apenas;
-.cadastrar nick;
-.o número de salas deve ser limitado;
-.o número de usuários deve ser limitado;
