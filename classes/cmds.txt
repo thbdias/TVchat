@@ -1,0 +1,11 @@
+javac *.java
+rmic Servidor
+rmic Cliente
+start /min rmiregistry
+java Servidor
+java Cliente
+
+
+comandos do cliente:
+  exit
+    finaliza o programa
