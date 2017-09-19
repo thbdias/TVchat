@@ -7,6 +7,8 @@ package RMIConection;
 
 import Models.Room;
 import Models.User;
+import RMIConection.Interfaces.Chat;
+import java.rmi.Naming;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -22,8 +24,10 @@ public class ServerConnection extends SuperConnection {
     int numPorta = 0;
     int numUsuariosPorSalas = 0;
     boolean prontoParaIniciar;
-    
-    ObservableList<Room> salas = FXCollections.observableArrayList();;
+
+    ObservableList<Room> salas = FXCollections.observableArrayList();
+
+    ;
 
     private ServerConnection() {
     }
@@ -38,15 +42,15 @@ public class ServerConnection extends SuperConnection {
     public ObservableList<Room> getSalas() {
         return salas;
     }
-    
+
     public ServerConnection setNumSalas(int numSalas) {
         this.numSalas = numSalas;
         for (int i = 0; i < this.numSalas; i++) {
             this.salas.add(new Room(i));
-            this.salas.get(i).getUsuarios().add(
-                    new User("teste "+i, "teste", "teste", i)
-            );
-                    
+//            this.salas.get(i).getUsuarios().add(
+//                    new User("teste " + i, "teste", "teste", i)
+//            );
+
         }
         this.prontoParaIniciar = !((numSalas == 0) || (numPorta == 0) || (numUsuariosPorSalas == 0));
         return INSTANCE;
@@ -66,13 +70,21 @@ public class ServerConnection extends SuperConnection {
 
     public void start() throws Exception {
         if (prontoParaIniciar) {
-            // TODO
+            try {
+                java.rmi.registry.LocateRegistry.createRegistry(this.numPorta);
+                System.out.println("RMI registry ready.");
+
+                Chat server = new ChatImpl();
+                Naming.rebind("rmi://localhost/chat", server);
+                System.out.println("============ Servidor Conectado ============");
+                
+            } catch (Exception e) {
+                System.out.println("Exception starting RMI registry:");
+                e.printStackTrace();
+            }
         } else {
             throw new Exception("Não foram informadas todas informações para iniciar");
         }
     }
-    
-    
-    
-    
+
 }

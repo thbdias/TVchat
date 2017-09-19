@@ -5,6 +5,7 @@
  */
 package Models;
 
+import java.io.Serializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,7 +13,8 @@ import javafx.collections.ObservableList;
  *
  * @author vinic
  */
-public class Room {
+public class Room implements Serializable {
+
     int id;
     ObservableList<User> usuarios;
 
@@ -36,5 +38,5 @@ public class Room {
     public void setUsuarios(ObservableList<User> usuarios) {
         this.usuarios = usuarios;
     }
-    
+
 }

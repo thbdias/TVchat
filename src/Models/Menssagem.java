@@ -5,23 +5,42 @@
  */
 package Models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author 912313
  */
-public class Menssagem {
-    private String mensagem;
-    private User user;
+public class Menssagem implements Serializable {
 
-    public Menssagem(String mensagem, User user) {
+    private String mensagem;
+    private User remetente;
+    private User destinatário;
+
+    public Menssagem(String mensagem, User remetente) {
         this.mensagem = mensagem;
-        this.user = user;
+        this.remetente = remetente;
+    }
+    public Menssagem(String mensagem, User remetente, User destinatario) {
+        this.mensagem = mensagem;
+        this.remetente = remetente;
+        this.destinatário = destinatario;
+    }
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public User getRemetente() {
+        return remetente;
+    }
+
+    public User getDestinatário() {
+        return destinatário;
     }
     
     @Override
     public String toString() {
-        return String.format("@%s: %s", this.user.getNick(), this.mensagem); 
+        return String.format("@%s: %s", this.remetente.getNick(), this.mensagem);
     }
-    
-    
 }

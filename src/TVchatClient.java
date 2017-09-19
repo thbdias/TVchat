@@ -27,7 +27,7 @@ public class TVchatClient extends Application {
         
 //        StackPane root = new StackPane();
 //        root.getChildren().add(btn);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Telas/Chat/Chat.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Telas/Chat/ChatMainScreen.fxml"));
         Scene scene = new Scene(loader.load());
         
 //        Scene scene = new Scene(root, 300, 250);

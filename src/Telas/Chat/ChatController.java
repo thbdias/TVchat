@@ -10,6 +10,7 @@ import Models.User;
 import RMIConection.ClientConnection;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,62 +35,77 @@ public class ChatController implements Initializable {
     ObservableList<Menssagem> listMessages;
     public Button button_send;
     public TextArea text_message;
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         listUsers = FXCollections.observableArrayList();
-        list_clients.setItems(listUsers );
-        
-        listMessages= FXCollections.observableArrayList();
+        list_clients.setItems(listUsers);
+
+        listMessages = FXCollections.observableArrayList();
         list_chat.setItems(listMessages);
-        
+
         button_send.setOnAction((ActionEvent e) -> {
             enviarMensagem();
         });
-        
+
         text_message.setOnKeyPressed((event) -> {
-           if(event.getCode() == KeyCode.ENTER){
-               enviarMensagem();
-               event.consume();
-           }
+            if (event.getCode() == KeyCode.ENTER) {
+                enviarMensagem();
+                event.consume();
+            }
         });
-        
+
         // Seta listeners com a classe conection para atualizar a interface
         ClientConnection.getInstance().addUserAddedListener((User user) -> {
-            this.listUsers.add(user);
+            // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+            Platform.runLater(
+                    () -> {
+                        // Update UI here.
+                        this.listUsers.add(user);
+                    }
+            );
         });
-        
+
         ClientConnection.getInstance().addUserRemovedListener((user) -> {
-            this.listUsers.remove(user);
+            // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+            Platform.runLater(
+                    () -> {
+                        // Update UI here.
+                        this.listUsers.remove(user);
+                    }
+            );
         });
-        
+
         ClientConnection.getInstance().addMessageRecievedListener((mensagem) -> {
-            this.listMessages.add(mensagem);
+            // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+            Platform.runLater(
+                    () -> {
+                        // Update UI here.
+                        this.listMessages.add(mensagem);
+                    }
+            );
         });
-    }    
-    
-    public void setarMensagemDireta(User user){
-        this.text_message.setText("@"+user.getNick()+": ");
+
+    }
+
+    public void setarMensagemDireta(User user) {
+        this.text_message.setText("@" + user.getNick() + ": ");
         this.text_message.setFocusTraversable(true);
     }
 
     private void enviarMensagem() {
-        String mensagem = text_message.getText();
-        if(mensagem.isEmpty())
+        if (text_message.getText().isEmpty()) {
             return;
+        }
+        Menssagem mensagem = new Menssagem(text_message.getText(), ClientConnection.getInstance().getMainUser());
         text_message.setText("");
-        listMessages.add(new Menssagem(mensagem, ClientConnection.getInstance().getMainUser()));
-        list_chat.scrollTo(listMessages.size() -1);
+        //listMessages.add(mensagem);
+        list_chat.scrollTo(listMessages.size() - 1);
         //TODO enviar
+        ClientConnection.getInstance().enviarMsg(mensagem);
     }
-    
-    private void addUser(User user){
-        listUsers.add(user);
-    }
-    
-    
-    
+
 }

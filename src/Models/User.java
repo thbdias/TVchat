@@ -5,27 +5,24 @@
  */
 package Models;
 
+import java.io.Serializable;
+
 /**
  *
  * @author 912313
  */
-public class User {
+public class User implements Serializable {
+
     private String nick;
     private String id;
-    private String add;
     private int roomId;
 
-    public User() {
-    }
-
-    public User(String nick, String id, String add, int roomId) {
+    public User(String nick, String id, int roomId) {
         this.nick = nick;
         this.id = id;
         this.roomId = roomId;
     }
 
-    
-    
     public String getNick() {
         return nick;
     }
@@ -42,14 +39,6 @@ public class User {
         this.id = id;
     }
 
-    public String getAdd() {
-        return add;
-    }
-
-    public void setAdd(String add) {
-        this.add = add;
-    }
-
     public int getRoomId() {
         return roomId;
     }
@@ -57,10 +46,10 @@ public class User {
     public void setRoomId(int roomId) {
         this.roomId = roomId;
     }
-    
+
     @Override
     public String toString() {
         return this.nick;
     }
-    
+
 }
