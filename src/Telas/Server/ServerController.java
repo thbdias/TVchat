@@ -66,11 +66,7 @@ public class ServerController implements Initializable {
     @FXML
     void onButtonConectarAction(ActionEvent event) throws IOException {
         try {
-            ServerConnection.getInstance().setNumPorta(Integer.parseInt(this.inputPorta.getText()));
-            ServerConnection.getInstance().setNumSalas(Integer.parseInt(this.inputSalas.getText()));
-            ServerConnection.getInstance().setNumUsuariosPorSalas(Integer.parseInt(this.inputUsuariosPorSala.getText()));
-            ServerConnection.getInstance().start();
-
+            
             //Abrir tela 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ServerMainScreen.fxml"));
 

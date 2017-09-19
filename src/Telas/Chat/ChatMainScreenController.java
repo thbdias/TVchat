@@ -33,9 +33,6 @@ public class ChatMainScreenController implements Initializable {
     private TextField inputIp;
 
     @FXML
-    private TextField inputPorta;
-
-    @FXML
     private TextField inputNick;
 
     @FXML
@@ -53,7 +50,6 @@ public class ChatMainScreenController implements Initializable {
     void onButtonConectarAction(ActionEvent event) throws IOException, Exception {
         
         ClientConnection.getInstance().setIp(this.inputIp.getText());
-        ClientConnection.getInstance().setPorta(Integer.parseInt(this.inputPorta.getText()));
         ClientConnection.getInstance().setMainUser(new User(this.inputNick.getText(), "algumid", 0));
         ClientConnection.getInstance().conectar();
         

@@ -30,7 +30,6 @@ public class ClientConnection extends SuperConnection {
     private Chat chat;
 
     private String ip;
-    private int porta = 0;
     private boolean prontoParaIniciar;
 
     private ClientConnection() {
@@ -45,7 +44,7 @@ public class ClientConnection extends SuperConnection {
 
     public void setMainUser(User mainUser) {
         this.mainUser = mainUser;
-        this.prontoParaIniciar = !((this.ip == null) || (this.porta == 0) || (this.mainUser == null));
+        this.prontoParaIniciar = !((this.ip == null) || (this.mainUser == null));
     }
 
     public User getMainUser() {
@@ -58,16 +57,7 @@ public class ClientConnection extends SuperConnection {
 
     public void setIp(String ip) {
         this.ip = ip;
-        this.prontoParaIniciar = !((this.ip == null) || (this.porta == 0) || (this.mainUser == null));
-    }
-
-    public int getPorta() {
-        return porta;
-    }
-
-    public void setPorta(int porta) {
-        this.porta = porta;
-        this.prontoParaIniciar = !((this.ip == null) || (this.porta == 0) || (this.mainUser == null));
+        this.prontoParaIniciar = !((this.ip == null) || (this.mainUser == null));
     }
 
     public void conectar() throws Exception {
@@ -107,43 +97,27 @@ public class ClientConnection extends SuperConnection {
      * do servidor e apresentando na tela do cliente
      */
     public void receberMsg() {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    int cont = chat.lerMensagem().size();
-                    while (true) {
-                        if (chat.lerMensagem().size() > cont) {
-                            List<Menssagem> mensagens = chat.lerMensagem();//lendo todas msg disponiveis no servidor
-                            Menssagem show_msg = mensagens.get(mensagens.size() - 1); //ultima msg
+        new Thread(() -> {
+            try {
+                int cont = chat.lerMensagem().size();
+                while (true) {
+                    List<Menssagem> mensagens = chat.lerMensagem();//lendo todas msg disponiveis no servidor
+                    if (mensagens.size() > cont) {
+                        Menssagem show_msg = mensagens.get(mensagens.size() - 1); //ultima msg
 
-                            //impedir de msg do emissor apareça na tela do emissor
-                            if (!(mainUser.getNick().equals(show_msg.getRemetente().getNick()))) {
-                                messageRecievedListenerlist.forEach(action -> action.onMessageRecieved(show_msg));
-                            }
-
-                            cont++;
-                        }
-                    }//end while
-                } catch (Exception e) {
-                    System.out.println("Erro Thread: " + e);
-                }
-            }//end run
-
-            private String obterNickFromMsg(String msg) {
-                String resp = "";
-
-                for (int i = 1; i < msg.length(); i++) { //msg[0] == '('
-                    if (msg.charAt(i) != ')') {
-                        resp += msg.charAt(i);
-                    } else {
-                        i = msg.length();
+                        //impedir de msg do emissor apareça na tela do emissor
+//                        if (!(mainUser.getNick().equals(show_msg.getRemetente().getNick()))) {
+//                            messageRecievedListenerlist.forEach(action -> action.onMessageRecieved(show_msg));
+//                        }
+                        cont++;
                     }
-                }
-
-                return resp;
-            }//end obterNick
-        }.start();
+                    Thread.sleep(500);
+                }//end while
+            } catch (Exception e) {
+                System.out.println("Erro Thread: " + e);
+                e.printStackTrace();
+            }
+        }).start();
     }//end receberMsg
 
     public void desconectar() {

@@ -15,7 +15,7 @@ public class Menssagem implements Serializable {
 
     private String mensagem;
     private User remetente;
-    private User destinatário;
+    private User destinatario;
 
     public Menssagem(String mensagem, User remetente) {
         this.mensagem = mensagem;
@@ -24,7 +24,7 @@ public class Menssagem implements Serializable {
     public Menssagem(String mensagem, User remetente, User destinatario) {
         this.mensagem = mensagem;
         this.remetente = remetente;
-        this.destinatário = destinatario;
+        this.destinatario = destinatario;
     }
 
     public String getMensagem() {
@@ -35,8 +35,8 @@ public class Menssagem implements Serializable {
         return remetente;
     }
 
-    public User getDestinatário() {
-        return destinatário;
+    public User getDestinatario() {
+        return destinatario;
     }
     
     @Override

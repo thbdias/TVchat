@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="536.0" prefWidth="844.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.111" fx:controller="Telas.Chat.ChatMainScreenController">
+<AnchorPane id="AnchorPane" prefHeight="536.0" prefWidth="844.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Telas.Chat.ChatMainScreenController">
     <stylesheets>
         <URL value="@chatmainscreen.css" />
     </stylesheets>
@@ -40,23 +40,6 @@
                            </VBox.margin>
                         </Label>
                         <TextField fx:id="inputIp" promptText="XXX.XXX.XXX.XXX" style="-fx-background-color: #00838f;" styleClass="inputFlat" stylesheets="@../Server/server.css">
-                           <VBox.margin>
-                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="Century Gothic" size="14.0" />
-                           </font>
-                        </TextField>
-                        <Separator prefWidth="200.0" stylesheets="@../Server/server.css" />
-                        <Label stylesheets="@../Server/server.css" text="Porta" textFill="WHITE">
-                           <font>
-                              <Font name="Raleway" size="18.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
-                           </VBox.margin>
-                        </Label>
-                        <TextField fx:id="inputPorta" promptText="XXXX" style="-fx-background-color: #00838f;" styleClass="inputFlat" stylesheets="@../Server/server.css">
                            <VBox.margin>
                               <Insets bottom="6.0" left="6.0" right="6.0" top="6.0" />
                            </VBox.margin>

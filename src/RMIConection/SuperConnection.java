@@ -10,7 +10,9 @@ import RMIConection.Interfaces.LoggerListener;
 import RMIConection.Interfaces.MessageRecievedListener;
 import RMIConection.Interfaces.UserAddedListener;
 import RMIConection.Interfaces.UserRemovedListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,12 +39,20 @@ public class SuperConnection {
     public void addMessageRecievedListener(MessageRecievedListener listener) {
         this.messageRecievedListenerlist.add(listener);
     }
-    
+
     public void addLoggerListener(LoggerListener listener) {
         this.loggerListenerlist.add(listener);
     }
-    
-    public void logging(String mensagem){
-        this.loggerListenerlist.forEach(a -> a.onLogging(mensagem));
+
+    public void logging(String mensagem) {
+        Date date = new Date();
+        StringBuilder sb = new StringBuilder();
+        sb.append(new SimpleDateFormat("yyyy.MM.dd  HH:mm").format(date));
+        sb.append(" [");
+        sb.append(new Exception().getStackTrace()[1].getClassName());
+        sb.append("]: ");
+        sb.append(mensagem);
+        System.out.println(sb.toString());
+        this.loggerListenerlist.forEach(a -> a.onLogging(sb.toString()));
     }
 }

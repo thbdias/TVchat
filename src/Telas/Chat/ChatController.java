@@ -85,6 +85,7 @@ public class ChatController implements Initializable {
                     () -> {
                         // Update UI here.
                         this.listMessages.add(mensagem);
+                        list_chat.scrollTo(listMessages.size() - 1);
                     }
             );
         });

@@ -9,6 +9,8 @@ import Models.Room;
 import Models.User;
 import RMIConection.Interfaces.Chat;
 import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -24,6 +26,7 @@ public class ServerConnection extends SuperConnection {
     int numPorta = 0;
     int numUsuariosPorSalas = 0;
     boolean prontoParaIniciar;
+    Registry registry;
 
     ObservableList<Room> salas = FXCollections.observableArrayList();
 
@@ -43,6 +46,10 @@ public class ServerConnection extends SuperConnection {
         return salas;
     }
 
+    public Registry getRegistry() {
+        return registry;
+    }
+    
     public ServerConnection setNumSalas(int numSalas) {
         this.numSalas = numSalas;
         for (int i = 0; i < this.numSalas; i++) {
@@ -71,7 +78,7 @@ public class ServerConnection extends SuperConnection {
     public void start() throws Exception {
         if (prontoParaIniciar) {
             try {
-                java.rmi.registry.LocateRegistry.createRegistry(this.numPorta);
+               this.registry = LocateRegistry.createRegistry(this.numPorta);
                 System.out.println("RMI registry ready.");
 
                 Chat server = new ChatImpl();
