@@ -6,6 +6,8 @@
 package Models;
 
 import java.io.Serializable;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  *
@@ -14,15 +16,15 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private String nick;
-    private String id;
+    private int id;
     private int roomId;
 
-    public User(String nick, String id, int roomId) {
+    public User(String nick, int id, int roomId) {
         this.nick = nick;
         this.id = id;
         this.roomId = roomId;
     }
-
+    
     public String getNick() {
         return nick;
     }
@@ -31,11 +33,11 @@ public class User implements Serializable {
         this.nick = nick;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

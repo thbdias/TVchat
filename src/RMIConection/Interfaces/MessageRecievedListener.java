@@ -5,7 +5,7 @@
  */
 package RMIConection.Interfaces;
 
-import Models.Menssagem;
+import Models.Mensagem;
 
 /**
  *
@@ -13,6 +13,6 @@ import Models.Menssagem;
  */
 public interface MessageRecievedListener {
 
-    public void onMessageRecieved(Menssagem message);
+    public void onMessageRecieved(Mensagem message);
     
 }

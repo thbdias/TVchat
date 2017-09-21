@@ -5,7 +5,7 @@
  */
 package RMIConection;
 
-import Models.Menssagem;
+import Models.Mensagem;
 import Models.Room;
 import Models.User;
 import RMIConection.Interfaces.Chat;
@@ -66,7 +66,7 @@ public class ClientConnection extends SuperConnection {
             try {
                 chat = (Chat) Naming.lookup("rmi://" + ip + "/chat");
                 this.connectionListenerListenerlist.forEach(action -> action.onConectedAdded(mainUser));
-                receberMsg();
+                //receberMsg();
             } catch (NotBoundException | MalformedURLException | RemoteException ex) {
                 Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -82,7 +82,7 @@ public class ClientConnection extends SuperConnection {
      *
      * @param msg
      */
-    public void enviarMsg(Menssagem msg) {
+    public void enviarMsg(Mensagem msg) {
         try {
             chat.sendMensagem(msg); //enviando msg para servidor
             //this.messageRecievedListenerlist.forEach(action -> action.onMessageRecieved(msg));
@@ -101,9 +101,9 @@ public class ClientConnection extends SuperConnection {
             try {
                 int cont = chat.lerMensagem().size();
                 while (true) {
-                    List<Menssagem> mensagens = chat.lerMensagem();//lendo todas msg disponiveis no servidor
+                    List<Mensagem> mensagens = chat.lerMensagem();//lendo todas msg disponiveis no servidor
                     if (mensagens.size() > cont) {
-                        Menssagem show_msg = mensagens.get(mensagens.size() - 1); //ultima msg
+                        Mensagem show_msg = mensagens.get(mensagens.size() - 1); //ultima msg
 
                         //impedir de msg do emissor apareça na tela do emissor
 //                        if (!(mainUser.getNick().equals(show_msg.getRemetente().getNick()))) {
@@ -135,7 +135,7 @@ public class ClientConnection extends SuperConnection {
         this.userRemovedListenerlist.forEach(action -> action.onUserRemoved(user));
     }
 
-    private void recieveMessage(Menssagem message) {
+    private void recieveMessage(Mensagem message) {
         this.messageRecievedListenerlist.forEach(action -> action.onMessageRecieved(message));
     }
 

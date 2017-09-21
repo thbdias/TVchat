@@ -35,7 +35,7 @@ public class ServerMainScreenController implements Initializable {
 
     @FXML
     private ScrollPane scrollPaneLog;
-    
+
     @FXML
     private Text textLog;
 
@@ -96,21 +96,6 @@ public class ServerMainScreenController implements Initializable {
 
     void iniciarVariaveis() {
         try {
-            if (ServerConnection.getInstance().getSalas().size() > 0) {
-                for (int i = 0; i < numSalas; i++) {
-                    Tab t = new Tab("Sala " + i);
-                    AnchorPane a = new AnchorPane();
-                    ListView<User> l = new ListView<>();
-                    AnchorPane.setBottomAnchor(l, 0.0);
-                    AnchorPane.setLeftAnchor(l, 0.0);
-                    AnchorPane.setRightAnchor(l, 0.0);
-                    AnchorPane.setTopAnchor(l, 0.0);
-                    l.setItems(ServerConnection.getInstance().getSalas().get(i).getUsuarios());
-                    a.getChildren().add(l);
-                    t.setContent(a);
-                    tabPaneSalas.getTabs().add(t);
-                }
-            }
             labelNumeroDeSalas.setText(numSalas + "");
             labelPorta.setText(numPorta + "");
             labelUsuariosporSala.setText(numUsuariosPorSalas + "");
@@ -119,6 +104,21 @@ public class ServerMainScreenController implements Initializable {
             ServerConnection.getInstance().setNumSalas(numUsuariosPorSalas);
             ServerConnection.getInstance().setNumUsuariosPorSalas(numUsuariosPorSalas);
             ServerConnection.getInstance().start();
+            
+            for (int i = 0; i < numSalas; i++) {
+                Tab t = new Tab("Sala " + i);
+                AnchorPane a = new AnchorPane();
+                ListView<User> l = new ListView<>();
+                AnchorPane.setBottomAnchor(l, 0.0);
+                AnchorPane.setLeftAnchor(l, 0.0);
+                AnchorPane.setRightAnchor(l, 0.0);
+                AnchorPane.setTopAnchor(l, 0.0);
+                l.setItems(ServerConnection.getInstance().getRooms().get(i).getUsuarios());
+                a.getChildren().add(l);
+                t.setContent(a);
+                tabPaneSalas.getTabs().add(t);
+            }
+            
         } catch (Exception ex) {
             ServerConnection.getInstance().logging(ServerMainScreenController.class.getName() + " " + ex);
         }

@@ -5,7 +5,7 @@
  */
 package Telas.Chat;
 
-import Models.Menssagem;
+import Models.Mensagem;
 import Models.User;
 import RMIConection.ClientConnection;
 import java.net.URL;
@@ -31,8 +31,8 @@ public class ChatController implements Initializable {
 
     public ListView<User> list_clients;
     ObservableList<User> listUsers;
-    public ListView<Menssagem> list_chat;
-    ObservableList<Menssagem> listMessages;
+    public ListView<Mensagem> list_chat;
+    ObservableList<Mensagem> listMessages;
     public Button button_send;
     public TextArea text_message;
 
@@ -101,7 +101,7 @@ public class ChatController implements Initializable {
         if (text_message.getText().isEmpty()) {
             return;
         }
-        Menssagem mensagem = new Menssagem(text_message.getText(), ClientConnection.getInstance().getMainUser());
+        Mensagem mensagem = new Mensagem(text_message.getText(), ClientConnection.getInstance().getMainUser());
         text_message.setText("");
         //listMessages.add(mensagem);
         list_chat.scrollTo(listMessages.size() - 1);

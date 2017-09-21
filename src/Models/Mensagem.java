@@ -11,17 +11,17 @@ import java.io.Serializable;
  *
  * @author 912313
  */
-public class Menssagem implements Serializable {
+public class Mensagem implements Serializable {
 
     private String mensagem;
     private User remetente;
     private User destinatario;
 
-    public Menssagem(String mensagem, User remetente) {
+    public Mensagem(String mensagem, User remetente) {
         this.mensagem = mensagem;
         this.remetente = remetente;
     }
-    public Menssagem(String mensagem, User remetente, User destinatario) {
+    public Mensagem(String mensagem, User remetente, User destinatario) {
         this.mensagem = mensagem;
         this.remetente = remetente;
         this.destinatario = destinatario;
