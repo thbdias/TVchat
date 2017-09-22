@@ -5,6 +5,7 @@
  */
 package Models;
 
+import RMIConection.Interfaces.ClienteChat;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,13 +20,16 @@ import java.util.Queue;
 public class Room implements Serializable {
 
     int id;
+    transient List<ClienteChat> clients;
     transient List<User> usuarios;
     transient Map <Integer,Queue<Mensagem>> mensagens;
+    int usuariosConectados;
 
 
     public Room(int id) {
         this.id = id;
         this.usuarios = new ArrayList<>();
+        this.clients = new ArrayList<>();
         this.mensagens = new HashMap<>();
     }
 
@@ -48,5 +52,27 @@ public class Room implements Serializable {
     public void setUsuarios(List<User> usuarios) {
         this.usuarios = usuarios;
     }
+
+    public List<ClienteChat> getClients() {
+        return clients;
+    }
+
+    public void setClients(List<ClienteChat> clients) {
+        this.clients = clients;
+    }
+
+    public void atualizarNumUsuarios() {
+        usuariosConectados ++;
+    }
+
+    public int getUsuariosConectados() {
+        return usuariosConectados;
+    }
+    
+    @Override
+    public String toString() {
+        return "Sala: "+this.id + " ["+ this.usuariosConectados +"] conectados"; //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 }

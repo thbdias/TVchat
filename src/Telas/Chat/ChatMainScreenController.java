@@ -80,6 +80,12 @@ public class ChatMainScreenController implements Initializable {
 
             appStage.setScene(scene);
             appStage.show();
+            
+            appStage.setOnCloseRequest(request -> {
+                if(ClientConnection.getInstance().getMainUser() != null){
+                    ClientConnection.getInstance().desconectar();
+                }
+            });
         } catch (IOException ex) {
             Logger.getLogger(ChatMainScreenController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -34,7 +34,8 @@ import javafx.scene.text.Text;
  * @author vinic
  */
 public class ServerMainScreenController implements Initializable {
-Map<Integer, ObservableList<User>> salas;
+
+    Map<Integer, ObservableList<User>> salas;
     @FXML
     private ScrollPane scrollPaneLog;
 
@@ -94,8 +95,11 @@ Map<Integer, ObservableList<User>> salas;
                 );
             }
         });
-        ServerConnection.getInstance().addUserAddedListener( user ->{
-           salas.get(user.getRoomId()).add(user);
+        ServerConnection.getInstance().addUserAddedListener(user -> {
+            salas.get(user.getRoomId()).add(user);
+        });
+        ServerConnection.getInstance().addUserRemovedListener(user -> {
+            salas.get(user.getRoomId()).remove(user);
         });
     }
 
@@ -109,7 +113,7 @@ Map<Integer, ObservableList<User>> salas;
             ServerConnection.getInstance().setNumSalas(numUsuariosPorSalas);
             ServerConnection.getInstance().setNumUsuariosPorSalas(numUsuariosPorSalas);
             ServerConnection.getInstance().start();
-            
+
             for (int i = 0; i < numSalas; i++) {
                 Tab t = new Tab("Sala " + i);
                 AnchorPane a = new AnchorPane();
@@ -118,14 +122,14 @@ Map<Integer, ObservableList<User>> salas;
                 AnchorPane.setLeftAnchor(l, 0.0);
                 AnchorPane.setRightAnchor(l, 0.0);
                 AnchorPane.setTopAnchor(l, 0.0);
-                ObservableList<User> o  = FXCollections.observableArrayList(); //ServerConnection.getInstance().getRooms().get(i).getUsuarios()
+                ObservableList<User> o = FXCollections.observableArrayList(); //ServerConnection.getInstance().getRooms().get(i).getUsuarios()
                 salas.put(i, o);
-                l.setItems( o );
+                l.setItems(o);
                 a.getChildren().add(l);
                 t.setContent(a);
                 tabPaneSalas.getTabs().add(t);
             }
-            
+
         } catch (Exception ex) {
             ServerConnection.getInstance().logging(ServerMainScreenController.class.getName() + " " + ex);
         }

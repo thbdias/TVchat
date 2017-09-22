@@ -9,6 +9,7 @@ import Models.Mensagem;
 import Models.Room;
 import Models.User;
 import RMIConection.Interfaces.Chat;
+import RMIConection.Interfaces.ClienteChat;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -65,7 +66,7 @@ public class ClientConnection extends SuperConnection {
 
     public ObservableList<Room> getRooms() {
         try {
-            ArrayList<Room> g = chat.getRooms();
+            ArrayList<Room> g = chat.getRooms(this.mainUser);
             return FXCollections.observableArrayList(g);
         } catch (RemoteException ex) {
             Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,7 +78,7 @@ public class ClientConnection extends SuperConnection {
 
         if (prontoParaIniciar) {
             try {
-                chat = (Chat) Naming.lookup("rmi://" + ip + "/chat");
+                chat = (Chat) Naming.lookup("rmi://" + ip +"/chat");
                 this.connectionListenerListenerlist.forEach(action -> action.onConectedAdded(mainUser));
                 //receberMsg();
             } catch (NotBoundException | MalformedURLException | RemoteException ex) {
@@ -92,7 +93,11 @@ public class ClientConnection extends SuperConnection {
     public void entrar(int sala) {
         try {
             mainUser.setRoomId(sala);
-            mainUser.setId(chat.conectarNaSala(mainUser));
+            ClienteChat c = new ClienteChatImpl();
+            mainUser.setId(chat.conectarNaSala(mainUser, c));
+            chat.getUsuariosDaSala(mainUser).forEach(user -> {
+                addUser(user);
+            });
             lerMensagens();
         } catch (Exception ex) {
             Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
@@ -160,33 +165,20 @@ public class ClientConnection extends SuperConnection {
         }).start();
     }
 
-    public void receberUsuario() {
-//         new Thread(() -> {
-//            try {
-//                while (chat.) {
-//                    Mensagem mensagens = chat.receberMensagem(mainUser);//lendo todas msg disponiveis no servidor
-//                    recieveMessage(mensagens);
-//                    Thread.sleep(500);
-//                }//end while                
-//            } catch (Exception e) {
-//                System.out.println("Erro Thread: " + e);
-//                e.printStackTrace();
-//            }
-//        }).start();
-    }
-
     public void desconectar() {
-        // TODO
-        this.connectionListenerListenerlist.forEach(action -> action.onDesconectedAdded(mainUser));
+        try {
+            this.chat.desconectar(mainUser);
+            this.connectionListenerListenerlist.forEach(action -> action.onDesconectedAdded(mainUser));
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    private void addUser(User user) {
-        this.usersList.getUsuarios().add(user);
+    public void addUser(User user) {
         this.userAddedListenerlist.forEach(action -> action.onUserAdded(user));
     }
 
-    private void removeUser(User user) {
-        this.usersList.getUsuarios().remove(user);
+    public void removeUser(User user) {
         this.userRemovedListenerlist.forEach(action -> action.onUserRemoved(user));
     }
 
