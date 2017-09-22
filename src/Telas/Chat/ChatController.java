@@ -89,6 +89,8 @@ public class ChatController implements Initializable {
                     }
             );
         });
+        
+        ClientConnection.getInstance().lerMensagens();
 
     }
 

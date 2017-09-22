@@ -13,9 +13,12 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -60,6 +63,16 @@ public class ClientConnection extends SuperConnection {
         this.prontoParaIniciar = !((this.ip == null) || (this.mainUser == null));
     }
 
+    public ObservableList<Room> getRooms() {
+        try {
+            ArrayList<Room> g = chat.getRooms();
+            return FXCollections.observableArrayList(g);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public void conectar() throws Exception {
 
         if (prontoParaIniciar) {
@@ -74,6 +87,16 @@ public class ClientConnection extends SuperConnection {
             throw new Exception("Não foram informadas todas informações para iniciar");
         }
 
+    }
+
+    public void entrar(int sala) {
+        try {
+            mainUser.setRoomId(sala);
+            mainUser.setId(chat.conectarNaSala(mainUser));
+            lerMensagens();
+        } catch (Exception ex) {
+            Logger.getLogger(ClientConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -119,6 +142,38 @@ public class ClientConnection extends SuperConnection {
             }
         }).start();
     }//end receberMsg
+
+    public void lerMensagens() {
+        new Thread(() -> {
+            try {
+                while (true) {
+                    if (chat.temNovaMensagem(mainUser)) {
+                        Mensagem mensagens = chat.receberMensagem(mainUser);//lendo todas msg disponiveis no servidor
+                        recieveMessage(mensagens);
+                    }
+                    Thread.sleep(500);
+                }//end while                
+            } catch (Exception e) {
+                System.out.println("Erro Thread: " + e);
+                e.printStackTrace();
+            }
+        }).start();
+    }
+
+    public void receberUsuario() {
+//         new Thread(() -> {
+//            try {
+//                while (chat.) {
+//                    Mensagem mensagens = chat.receberMensagem(mainUser);//lendo todas msg disponiveis no servidor
+//                    recieveMessage(mensagens);
+//                    Thread.sleep(500);
+//                }//end while                
+//            } catch (Exception e) {
+//                System.out.println("Erro Thread: " + e);
+//                e.printStackTrace();
+//            }
+//        }).start();
+    }
 
     public void desconectar() {
         // TODO

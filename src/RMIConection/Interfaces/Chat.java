@@ -16,8 +16,8 @@ public interface Chat extends Remote{
     public ArrayList<Mensagem> lerMensagem() throws RemoteException;
     public boolean temNovaMensagem(User user) throws RemoteException;
     public Mensagem receberMensagem(User user) throws RemoteException;
-    public List<Room> getRooms() throws RemoteException;
-    public void conectarNaSala(User user) throws Exception, RemoteException;
+    public ArrayList<Room> getRooms() throws RemoteException;
+    public int conectarNaSala(User user) throws Exception, RemoteException;
     public void desconectar(User user) throws RemoteException;
     
 }

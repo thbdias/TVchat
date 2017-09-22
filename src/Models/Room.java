@@ -6,11 +6,11 @@
 package Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 /**
  *
@@ -19,15 +19,14 @@ import javafx.collections.ObservableList;
 public class Room implements Serializable {
 
     int id;
-    ObservableList<User> usuarios;
-    Map <Integer,Queue<Mensagem>> mensagens;
+    transient List<User> usuarios;
+    transient Map <Integer,Queue<Mensagem>> mensagens;
 
 
     public Room(int id) {
         this.id = id;
-        this.usuarios = FXCollections.observableArrayList();
+        this.usuarios = new ArrayList<>();
         this.mensagens = new HashMap<>();
-        this.usuarios = FXCollections.observableArrayList();
     }
 
     public Map<Integer, Queue<Mensagem>> getMensagens() {
@@ -42,11 +41,11 @@ public class Room implements Serializable {
         this.id = id;
     }
 
-    public ObservableList<User> getUsuarios() {
+    public List<User> getUsuarios() {
         return usuarios;
     }
 
-    public void setUsuarios(ObservableList<User> usuarios) {
+    public void setUsuarios(List<User> usuarios) {
         this.usuarios = usuarios;
     }
 

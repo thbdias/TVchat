@@ -10,6 +10,8 @@ import Models.User;
 import RMIConection.Interfaces.LoggerListener;
 import RMIConection.ServerConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +34,7 @@ import javafx.scene.text.Text;
  * @author vinic
  */
 public class ServerMainScreenController implements Initializable {
-
+Map<Integer, ObservableList<User>> salas;
     @FXML
     private ScrollPane scrollPaneLog;
 
@@ -78,7 +80,7 @@ public class ServerMainScreenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        this.salas = new HashMap<>();
         tabPaneSalas.getTabs().clear();
         ServerConnection.getInstance().addLoggerListener(new LoggerListener() {
             @Override
@@ -91,6 +93,9 @@ public class ServerMainScreenController implements Initializable {
                         }
                 );
             }
+        });
+        ServerConnection.getInstance().addUserAddedListener( user ->{
+           salas.get(user.getRoomId()).add(user);
         });
     }
 
@@ -113,7 +118,9 @@ public class ServerMainScreenController implements Initializable {
                 AnchorPane.setLeftAnchor(l, 0.0);
                 AnchorPane.setRightAnchor(l, 0.0);
                 AnchorPane.setTopAnchor(l, 0.0);
-                l.setItems(ServerConnection.getInstance().getRooms().get(i).getUsuarios());
+                ObservableList<User> o  = FXCollections.observableArrayList(); //ServerConnection.getInstance().getRooms().get(i).getUsuarios()
+                salas.put(i, o);
+                l.setItems( o );
                 a.getChildren().add(l);
                 t.setContent(a);
                 tabPaneSalas.getTabs().add(t);

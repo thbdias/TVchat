@@ -59,22 +59,25 @@ public class ChatMainScreenController implements Initializable {
         ClientConnection.getInstance().setIp(this.inputIp.getText());
         ClientConnection.getInstance().setMainUser(new User(this.inputNick.getText(), 1, 0));
         ClientConnection.getInstance().conectar();
-        
+
+        listaSalas.setItems(ClientConnection.getInstance().getRooms());
+
     }
 
     @FXML
     void onButtonEntrarAction(ActionEvent event) {
-        
+
         Room r = listaSalas.getItems().get(listaSalas.getSelectionModel().getSelectedIndex());
-        
         try {
+            ClientConnection.getInstance().entrar(r.getId());
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
-            
+
             Parent parent = loader.load();
-            
+
             Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(parent);
-            
+
             appStage.setScene(scene);
             appStage.show();
         } catch (IOException ex) {

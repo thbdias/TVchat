@@ -86,7 +86,7 @@ public class ServerConnection extends SuperConnection{
         return numUsuariosPorSalas;
     }
     
-    public List<Room> getRooms(){
+    public ArrayList<Room> getRooms(){
         return new ArrayList<>(salas.values());
     }
     
@@ -95,10 +95,10 @@ public class ServerConnection extends SuperConnection{
             try {
                this.registry = LocateRegistry.createRegistry(this.numPorta);
 
-                Chat server = new ChatImpl();
+                ChatImpl server = new ChatImpl(salas);
                 Naming.rebind("rmi://localhost/chat", server);
                 logging("============ Servidor Conectado ============");
-                
+                                
             } catch (Exception e) {
                 System.out.println("Exception starting RMI registry:");
                 e.printStackTrace();
